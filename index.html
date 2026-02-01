@@ -139,39 +139,53 @@
         const question = document.getElementById('question');
         const btnGroup = document.getElementById('btn-group');
         const messageFinal = document.getElementById('message-final');
-        const photo = document.getElementById('monkey-photo');
+        const photo = document.getElementById('couple-photo');
+        const audio = document.getElementById('ma-musique');
+
+        // Variable pour savoir si la musique a déjà démarré
+        let musiqueDemarree = false;
+
+        // Fonction pour lancer la musique proprement
+        function lancerMusique() {
+            if (!musiqueDemarree) {
+                audio.volume = 0.5; // Volume à 50%
+                audio.play().then(() => {
+                    musiqueDemarree = true;
+                }).catch(error => {
+                    console.log("Le navigateur a bloqué le son au survol (protection anti-bruit).");
+                });
+            }
+        }
 
         // Fonction pour déplacer le bouton Non
         function fuir() {
-            // Récupère la taille de la fenêtre
+            // C'est ici ! Dès qu'on essaie d'attraper le bouton, on lance la musique
+            lancerMusique();
+
             const largeurFenetre = window.innerWidth;
             const hauteurFenetre = window.innerHeight;
-
-            // Récupère la taille du bouton
             const largeurBtn = btnNon.offsetWidth;
             const hauteurBtn = btnNon.offsetHeight;
 
-            // Calcule une nouvelle position aléatoire
-            // On soustrait la taille du bouton pour qu'il ne sorte pas de l'écran
             const nouvX = Math.random() * (largeurFenetre - largeurBtn - 50);
             const nouvY = Math.random() * (hauteurFenetre - hauteurBtn - 50);
 
-            // Applique la position absolue
-            btnNon.style.position = "fixed"; // Passe en position fixe par rapport à l'écran
+            btnNon.style.position = "fixed";
             btnNon.style.left = nouvX + "px";
             btnNon.style.top = nouvY + "px";
         }
 
-        // Événement : Quand on survole le bouton "Non" (PC)
+        // Événements pour le bouton "Non"
+        // PC : Dès que la souris approche (survol)
         btnNon.addEventListener('mouseover', fuir);
         
-        // Événement : Quand on essaie de toucher le bouton "Non" (Mobile)
+        // Mobile : Dès qu'on essaie de toucher
         btnNon.addEventListener('touchstart', function(e) {
-            e.preventDefault(); // Empêche le clic standard
+            e.preventDefault(); 
             fuir();
         });
         
-        // Sécurité : Si elle arrive quand même à cliquer
+        // Sécurité clic
         btnNon.addEventListener('click', function(e) {
             e.preventDefault();
             fuir();
@@ -179,27 +193,23 @@
 
         // Événement : Quand on clique sur "Oui"
         btnOui.addEventListener('click', function() {
-            // On cache la question et les boutons
+            // On lance aussi la musique ici, au cas où elle n'aurait pas démarré avant
+            lancerMusique();
+
             question.classList.add('hidden');
             btnGroup.classList.add('hidden');
-            photo.classList.add('hidden');
+            if(photo) photo.classList.add('hidden'); // Cache la photo si elle existe
             
-            // Si le bouton Non était parti en balade, on le cache aussi spécifiquement
             btnNon.style.display = 'none';
-
-            // On affiche le message d'amour
             messageFinal.classList.remove('hidden');
             
-            // Petit bonus : change la couleur de fond
             document.body.style.backgroundColor = "#ffdde1";
             document.body.style.background = "radial-gradient(circle, #fce4ec 0%, #f8bbd0 100%)";
             
-            // Effet de confettis simple (emoji)
             lancerConfettis();
         });
 
         function lancerConfettis() {
-            // Création simple de quelques cœurs qui tombent
             for(let i=0; i<30; i++) {
                 const heart = document.createElement('div');
                 heart.innerHTML = '❤️';
@@ -211,7 +221,6 @@
                 document.body.appendChild(heart);
             }
             
-            // Ajout dynamique du style pour l'animation
             const styleSheet = document.createElement("style");
             styleSheet.innerText = `
                 @keyframes tomber {
@@ -220,31 +229,9 @@
             `;
             document.head.appendChild(styleSheet);
         }
-        /* --- Gestion de la Musique --- */
-    const audio = document.getElementById('ma-musique');
-    
-    // On baisse un peu le volume pour ne pas lui casser les oreilles (0.5 = 50%)
-    audio.volume = 0.5;
-
-    // Fonction pour lancer la musique
-    function lancerMusique() {
-        audio.play().then(() => {
-            // La musique a démarré !
-        }).catch(error => {
-            console.log("Lecture automatique bloquée par le navigateur, attente d'interaction.");
-        });
-    }
-
-    // Essayer de lancer tout de suite
-    lancerMusique();
-
-    // Si ça a été bloqué, on lance au premier clic n'importe où sur la page
-    document.body.addEventListener('click', function() {
-        audio.play();
-    }, { once: true }); // "once: true" signifie que cet événement ne se déclenchera qu'une seule fois
-        
     </script>
 </body>
 
 </html>
+
 
