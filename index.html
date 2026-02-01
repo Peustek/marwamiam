@@ -36,6 +36,18 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
+        #monkey-photo {
+            /* La largeur max est de 100% du conteneur, mais jamais plus de 300px */
+            /* Tu peux ajuster le "300px" selon tes goûts */
+            max-width: 90%; 
+            width: 300px; 
+            height: auto; /* Garde les proportions de l'image */
+            border-radius: 20px; /* Arrondit les angles pour un look plus doux */
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1); /* Une petite ombre portée */
+            margin-bottom: 20px; /* Espace entre la photo et la question */
+            object-fit: cover; /* S'assure que l'image remplit bien le cadre si tu fixes une hauteur */
+        }
+
         .buttons {
             display: flex;
             gap: 20px;
@@ -105,6 +117,8 @@
     </audio>
 
     <div class="container">
+        <img src="monkey.png" alt="Photo Monkey" id="monkey-photo">
+        
         <h1 id="question">Marwa est ce que tu veux être ma Valentine ?</h1>
 
         <div class="buttons" id="btn-group">
@@ -125,6 +139,7 @@
         const question = document.getElementById('question');
         const btnGroup = document.getElementById('btn-group');
         const messageFinal = document.getElementById('message-final');
+        const photo = document.getElementById('monkey-photo');
 
         // Fonction pour déplacer le bouton Non
         function fuir() {
@@ -167,6 +182,7 @@
             // On cache la question et les boutons
             question.classList.add('hidden');
             btnGroup.classList.add('hidden');
+            photo.classList.add('hidden');
             
             // Si le bouton Non était parti en balade, on le cache aussi spécifiquement
             btnNon.style.display = 'none';
@@ -231,3 +247,4 @@
 </body>
 
 </html>
+
