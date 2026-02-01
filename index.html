@@ -121,6 +121,16 @@
             box-shadow: 0 0 20px rgba(255, 71, 87, 0.6) !important; /* Un halo lumineux */
         }
 
+        .mega-gros-gold {
+            transform: scale(2.0); /* Encore plus gros (x2) */
+            background-color: #FFD700 !important; /* GOLD */
+            color: #fff; /* Texte blanc */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* Pour que le blanc ressorte bien sur le jaune */
+            animation: shake-grow 0.5s infinite; /* On garde la secousse */
+            z-index: 200; /* Devant tout le monde */
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.8) !important; /* Gros halo doré */
+        }
+
         /* Classe pour cacher les éléments après le "Oui" */
         .hidden {
             display: none !important;
@@ -158,6 +168,10 @@
         <source src="win.mp3" type="audio/mpeg">
     </audio>
 
+    <audio id="son-aww">
+        <source src="aww.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="container">
         <img src="monkey.png" alt="Photo Monkey" id="monkey-photo">
         
@@ -189,6 +203,7 @@
         const photo = document.getElementById('monkey-photo');
         const audio = document.getElementById('ma-musique');
         const audioVictoire = document.getElementById('son-victoire');
+        const audioAww = document.getElementById('son-aww');
         const msgPersuasion = document.getElementById('msg-persuasion');
 
         // Variable pour savoir si la musique a déjà démarré
@@ -221,6 +236,22 @@
                 btnOui.classList.add('gros-et-secoue');
                 // 2. On affiche le texte de persuasion
                 msgPersuasion.classList.remove('hidden');
+            }
+
+            if (tentatives === 12) {
+                // 1. On change le texte (Correction orthographe)
+                msgPersuasion.innerText = "Allez dis Oui s'il te plaît 🥺";
+                
+                // 2. On change l'image (Couple -> Chat)
+                if(photo) photo.src = "begging.gif";
+
+                // 3. On upgrade le bouton (Rouge -> Gold)
+                btnOui.classList.remove('gros-et-secoue'); // On enlève l'ancien style
+                btnOui.classList.add('mega-gros-gold');    // On met le nouveau style Gold
+
+                // 4. On joue le son "Aww" (sans couper la musique)
+                audioAww.volume = 1.0;
+                audioAww.play();
             }
 
             const largeurFenetre = window.innerWidth;
@@ -321,6 +352,7 @@
 </body>
 
 </html>
+
 
 
 
