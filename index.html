@@ -115,6 +115,8 @@
             100% { transform: scale(1.5) rotate(0deg); }
         }
 
+        /*--------------------------------------------------------------------------------------------------------------*/
+
         /* La classe qu'on va ajouter via JavaScript */
         .gros-et-secoue {
             /* On force la taille et l'animation */
@@ -134,6 +136,8 @@
             z-index: 200; /* Devant tout le monde */
             box-shadow: 0 0 40px rgba(255, 215, 0, 0.8) !important; /* Gros halo doré */
         }
+
+        /*--------------------------------------------------------------------------------------------------------------*/
 
         /* Classe pour cacher les éléments après le "Oui" */
         .hidden {
@@ -209,13 +213,11 @@
         const audioVictoire = document.getElementById('son-victoire');
         const audioAww = document.getElementById('son-aww');
         const msgPersuasion = document.getElementById('msg-persuasion');
-
-        // Variable pour savoir si la musique a déjà démarré
-        let musiqueDemarree = false;
+        
+        let musiqueDemarree = false; // Variable pour savoir si la musique a déjà démarré
         let tentatives = 0; // Compteur d'essais sur le NON
 
-        // Fonction pour lancer la musique proprement
-        function lancerMusique() {
+        function lancerMusique() { // Fonction pour lancer la musique proprement
             if (!musiqueDemarree) {
                 audio.volume = 0.5; // Volume à 50%
                 audio.play().then(() => {
@@ -226,29 +228,23 @@
             }
         }
 
-        // Fonction pour déplacer le bouton Non
-        function fuir() {
-            // C'est ici ! Dès qu'on essaie d'attraper le bouton, on lance la musique
+        /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+        
+        function fuir() { // Fonction pour déplacer le bouton Non
             lancerMusique();
 
-            // --- NOUVEAU : Logique du compteur ---
-            tentatives++; // On ajoute +1 au compteur
+            tentatives++; // On ajoute +1 au compteur de tentatives de Non
             
-            if (tentatives === 5) {
-                // Au bout de 10 essais :
-                // 1. On ajoute la classe CSS spéciale au bouton OUI
-                btnOui.classList.add('gros-et-secoue');
-                // 2. On affiche le texte de persuasion
-                msgPersuasion.classList.remove('hidden');
+            if (tentatives === 5) { // Au bout de 5 tentatives de Non
+                btnOui.classList.add('gros-et-secoue'); // 1. On ajoute la classe CSS spéciale au bouton OUI
+                msgPersuasion.classList.remove('hidden'); // 2. On affiche le texte de persuasion
             }
-
-            if (tentatives === 8) {
-                // 1. On change le texte (Correction orthographe)
-                msgPersuasion.innerText = "Allez dis Oui s'il te plaît 🥺";
+            
+            if (tentatives === 8) { // Au bout de 8 tentatives de Non
+                msgPersuasion.innerText = "Allez dis Oui s'il te plaît 🥺"; // 1. On change le texte (Correction orthographe)
                 
-                // 2. On change l'image (Couple -> Chat)
-                if(photo) photo.src = "begging.gif";
-
+                if(photo) photo.src = "begging.gif";// 2. On change l'image (Couple -> Chat)
+                
                 // 3. On upgrade le bouton (Rouge -> Gold)
                 btnOui.classList.remove('gros-et-secoue'); // On enlève l'ancien style
                 btnOui.classList.add('mega-gros-gold');    // On met le nouveau style Gold
@@ -257,6 +253,17 @@
                 audioAww.volume = 0.7;
                 audioAww.play();
             }
+
+            if (tentatives === 12) { // Au bout de 12 tentatives de Non
+                msgPersuasion.innerText = "Tu veux vraiment pas dire Oui... 😔";                
+                /*if(photo) photo.src = "begging.gif";
+                btnOui.classList.remove('gros-et-secoue');
+                btnOui.classList.add('mega-gros-gold');
+                audioAww.volume = 0.7;
+                audioAww.play();*/
+            }
+
+            /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
             const largeurFenetre = window.innerWidth;
             const hauteurFenetre = window.innerHeight;
@@ -356,6 +363,7 @@
 </body>
 
 </html>
+
 
 
 
