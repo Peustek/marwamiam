@@ -231,29 +231,53 @@
         });
 
         function lancerConfettis() {
-            for(let i=0; i<100; i++) {
+            // On augmente un peu le nombre de cœurs pour l'effet de profondeur (passons à 50)
+            for(let i=0; i<50; i++) {
                 const heart = document.createElement('div');
                 heart.innerHTML = '❤️';
                 heart.style.position = 'fixed';
+                
+                // --- NOUVEAU : Gestion de la profondeur (Z-Index) ---
+                // Math.random() donne un chiffre entre 0 et 1.
+                if (Math.random() < 0.5) {
+                    // 50% de chance : Le cœur passe DERRIÈRE (z-index faible)
+                    // Le conteneur principal a un z-index de 1, donc on met 0 pour être dessous.
+                    heart.style.zIndex = '0'; 
+                    // Petite astuce : on les rend un peu plus petits et transparents pour l'effet de lointain
+                    heart.style.opacity = '0.7'; 
+                    heart.style.fontSize = (Math.random() * 15 + 10) + 'px'; // Plus petits (10-25px)
+                } else {
+                    // 50% de chance : Le cœur passe DEVANT (z-index élevé)
+                    heart.style.zIndex = '100'; // 100 est largement au-dessus de tout le reste
+                    heart.style.opacity = '1';
+                    heart.style.fontSize = (Math.random() * 25 + 20) + 'px'; // Plus gros (20-45px)
+                }
+                // ----------------------------------------------------
+
                 heart.style.left = Math.random() * 100 + 'vw';
                 heart.style.top = '-10vh';
-                heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
-                heart.style.animation = `tomber ${Math.random() * 2 + 3}s linear`;
+                // On varie un peu la vitesse aussi (entre 3s et 7s)
+                heart.style.animation = `tomber ${Math.random() * 4 + 3}s linear`;
                 document.body.appendChild(heart);
             }
             
-            const styleSheet = document.createElement("style");
-            styleSheet.innerText = `
-                @keyframes tomber {
-                    to { transform: translateY(110vh) rotate(360deg); }
-                }
-            `;
-            document.head.appendChild(styleSheet);
+            // (Le reste ne change pas, on vérifie juste que le style n'existe pas déjà)
+            if (!document.getElementById('style-confettis')) {
+                const styleSheet = document.createElement("style");
+                styleSheet.id = 'style-confettis';
+                styleSheet.innerText = `
+                    @keyframes tomber {
+                        to { transform: translateY(110vh) rotate(360deg); }
+                    }
+                `;
+                document.head.appendChild(styleSheet);
+            }
         }
     </script>
 </body>
 
 </html>
+
 
 
 
