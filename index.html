@@ -93,6 +93,34 @@
             position: relative; /* Nécessaire pour le déplacer */
         }
 
+        /* Style du texte de persuasion */
+        #msg-persuasion {
+            color: #d6336c;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-top: 15px;
+            animation: fadeIn 0.5s;
+        }
+
+        /* L'animation de secousse + agrandissement */
+        @keyframes shake-grow {
+            0% { transform: scale(1.5) rotate(0deg); }
+            25% { transform: scale(1.5) rotate(-5deg); }
+            50% { transform: scale(1.5) rotate(5deg); }
+            75% { transform: scale(1.5) rotate(-5deg); }
+            100% { transform: scale(1.5) rotate(0deg); }
+        }
+
+        /* La classe qu'on va ajouter via JavaScript */
+        .gros-et-secoue {
+            /* On force la taille et l'animation */
+            transform: scale(1.5); 
+            animation: shake-grow 0.5s infinite; /* "infinite" pour qu'il bouge tout le temps */
+            background-color: #ff4757 !important; /* On le rend un peu plus rouge pour attirer l'oeil */
+            z-index: 100; /* Passe devant tout le reste */
+            box-shadow: 0 0 20px rgba(255, 71, 87, 0.6) !important; /* Un halo lumineux */
+        }
+
         /* Classe pour cacher les éléments après le "Oui" */
         .hidden {
             display: none !important;
@@ -140,6 +168,8 @@
             <button id="btn-non">Non</button>
         </div>
 
+        <p id="msg-persuasion" class="hidden">T'es sûre que tu ne veux pas dire Oui ? 🤔</p>
+
         <div id="message-final" class="hidden">
             Je savais que tu dirais oui hehehe!!! <br>
             On va passer une super Saint Valentin ensemble !!! <br>
@@ -159,9 +189,11 @@
         const photo = document.getElementById('monkey-photo');
         const audio = document.getElementById('ma-musique');
         const audioVictoire = document.getElementById('son-victoire');
+        const msgPersuasion = document.getElementById('msg-persuasion');
 
         // Variable pour savoir si la musique a déjà démarré
         let musiqueDemarree = false;
+        let tentatives = 0; // Compteur d'essais sur le NON
 
         // Fonction pour lancer la musique proprement
         function lancerMusique() {
@@ -179,6 +211,17 @@
         function fuir() {
             // C'est ici ! Dès qu'on essaie d'attraper le bouton, on lance la musique
             lancerMusique();
+
+            // --- NOUVEAU : Logique du compteur ---
+            tentatives++; // On ajoute +1 au compteur
+            
+            if (tentatives === 10) {
+                // Au bout de 10 essais :
+                // 1. On ajoute la classe CSS spéciale au bouton OUI
+                btnOui.classList.add('gros-et-secoue');
+                // 2. On affiche le texte de persuasion
+                msgPersuasion.classList.remove('hidden');
+            }
 
             const largeurFenetre = window.innerWidth;
             const hauteurFenetre = window.innerHeight;
@@ -277,6 +320,7 @@
 </body>
 
 </html>
+
 
 
 
