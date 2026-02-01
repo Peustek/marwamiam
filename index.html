@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pour Marwa ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS : Le Style --- */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex; /* Utilisation de Flexbox pour centrer le contenu */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            background-color: #ffdde1; /* Couleur de fond de secours */
+            font-family: 'Nunito', sans-serif;
+            overflow: hidden; /* Empêche le scroll si le bouton sort un peu */
+        }
+
+        .container {
+            text-align: center;
+            z-index: 1;
+        }
+
+        h1 {
+            color: #ff4d6d;
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            padding: 0 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            position: relative; /* Important pour le contexte du bouton Non */
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Fredoka One', cursive;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        #btn-oui {
+            background-color: #4CAF50; /* Vert */
+            color: white;
+        }
+
+        #btn-oui:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+
+        #btn-non {
+            background-color: #ff4d6d; /* Rouge/Rose */
+            color: white;
+            position: relative; /* Nécessaire pour le déplacer */
+        }
+
+        /* Classe pour cacher les éléments après le "Oui" */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Style du message final */
+        #message-final {
+            font-size: 1.5rem;
+            color: #d6336c;
+            font-weight: bold;
+            padding: 20px;
+            animation: fadeIn 2s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Responsive (Mobile) --- */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            button { padding: 12px 24px; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    
+    <audio id="ma-musique" loop>
+        <source src="nintendogs.mp3" type="audio/mpeg">
+        Votre navigateur ne supporte pas l'élément audio.
+    </audio>
+
+    <div class="container">
+        <h1 id="question">Marwa est ce que tu veux être ma Valentine ?</h1>
+
+        <div class="buttons" id="btn-group">
+            <button id="btn-oui">Oui</button>
+            <button id="btn-non">Non</button>
+        </div>
+
+        <div id="message-final" class="hidden">
+            Je savais que tu dirais oui hehe!!! <br>
+            Moi aussi je t'aime ma choubidouwap 🐟
+        </div>
+    </div>
+
+    <script>
+        /* --- JavaScript : La Logique --- */
+        const btnOui = document.getElementById('btn-oui');
+        const btnNon = document.getElementById('btn-non');
+        const question = document.getElementById('question');
+        const btnGroup = document.getElementById('btn-group');
+        const messageFinal = document.getElementById('message-final');
+
+        // Fonction pour déplacer le bouton Non
+        function fuir() {
+            // Récupère la taille de la fenêtre
+            const largeurFenetre = window.innerWidth;
+            const hauteurFenetre = window.innerHeight;
+
+            // Récupère la taille du bouton
+            const largeurBtn = btnNon.offsetWidth;
+            const hauteurBtn = btnNon.offsetHeight;
+
+            // Calcule une nouvelle position aléatoire
+            // On soustrait la taille du bouton pour qu'il ne sorte pas de l'écran
+            const nouvX = Math.random() * (largeurFenetre - largeurBtn - 50);
+            const nouvY = Math.random() * (hauteurFenetre - hauteurBtn - 50);
+
+            // Applique la position absolue
+            btnNon.style.position = "fixed"; // Passe en position fixe par rapport à l'écran
+            btnNon.style.left = nouvX + "px";
+            btnNon.style.top = nouvY + "px";
+        }
+
+        // Événement : Quand on survole le bouton "Non" (PC)
+        btnNon.addEventListener('mouseover', fuir);
+        
+        // Événement : Quand on essaie de toucher le bouton "Non" (Mobile)
+        btnNon.addEventListener('touchstart', function(e) {
+            e.preventDefault(); // Empêche le clic standard
+            fuir();
+        });
+        
+        // Sécurité : Si elle arrive quand même à cliquer
+        btnNon.addEventListener('click', function(e) {
+            e.preventDefault();
+            fuir();
+        });
+
+        // Événement : Quand on clique sur "Oui"
+        btnOui.addEventListener('click', function() {
+            // On cache la question et les boutons
+            question.classList.add('hidden');
+            btnGroup.classList.add('hidden');
+            
+            // Si le bouton Non était parti en balade, on le cache aussi spécifiquement
+            btnNon.style.display = 'none';
+
+            // On affiche le message d'amour
+            messageFinal.classList.remove('hidden');
+            
+            // Petit bonus : change la couleur de fond
+            document.body.style.backgroundColor = "#ffdde1";
+            document.body.style.background = "radial-gradient(circle, #fce4ec 0%, #f8bbd0 100%)";
+            
+            // Effet de confettis simple (emoji)
+            lancerConfettis();
+        });
+
+        function lancerConfettis() {
+            // Création simple de quelques cœurs qui tombent
+            for(let i=0; i<30; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.style.position = 'fixed';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = '-10vh';
+                heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                heart.style.animation = `tomber ${Math.random() * 2 + 3}s linear`;
+                document.body.appendChild(heart);
+            }
+            
+            // Ajout dynamique du style pour l'animation
+            const styleSheet = document.createElement("style");
+            styleSheet.innerText = `
+                @keyframes tomber {
+                    to { transform: translateY(110vh) rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(styleSheet);
+        }
+        /* --- Gestion de la Musique --- */
+    const audio = document.getElementById('ma-musique');
+    
+    // On baisse un peu le volume pour ne pas lui casser les oreilles (0.5 = 50%)
+    audio.volume = 0.5;
+
+    // Fonction pour lancer la musique
+    function lancerMusique() {
+        audio.play().then(() => {
+            // La musique a démarré !
+        }).catch(error => {
+            console.log("Lecture automatique bloquée par le navigateur, attente d'interaction.");
+        });
+    }
+
+    // Essayer de lancer tout de suite
+    lancerMusique();
+
+    // Si ça a été bloqué, on lance au premier clic n'importe où sur la page
+    document.body.addEventListener('click', function() {
+        audio.play();
+    }, { once: true }); // "once: true" signifie que cet événement ne se déclenchera qu'une seule fois
+        
+    </script>
+</body>
+</html>
