@@ -116,6 +116,10 @@
         Votre navigateur ne supporte pas l'élément audio.
     </audio>
 
+    <audio id="son-victoire">
+        <source src="win.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="container">
         <img src="monkey.png" alt="Photo Monkey" id="monkey-photo">
         
@@ -141,6 +145,7 @@
         const messageFinal = document.getElementById('message-final');
         const photo = document.getElementById('monkey-photo');
         const audio = document.getElementById('ma-musique');
+        const audioVictoire = document.getElementById('son-victoire');
 
         // Variable pour savoir si la musique a déjà démarré
         let musiqueDemarree = false;
@@ -196,6 +201,10 @@
             // On lance aussi la musique ici, au cas où elle n'aurait pas démarré avant
             lancerMusique();
 
+            audio.volume = 0.2;
+            audioVictoire.volume = 1.0; // Volume à fond !
+            audioVictoire.play();
+
             question.classList.add('hidden');
             btnGroup.classList.add('hidden');
             if(photo) photo.classList.add('hidden'); // Cache la photo si elle existe
@@ -233,6 +242,7 @@
 </body>
 
 </html>
+
 
 
 
